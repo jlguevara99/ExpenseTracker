@@ -1,10 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
-const mongoose = requiere('mongoose');
+const mongoose = require('mongoose');
 const app = express();
 //Settings
 app.set('port', process.env.PORT || 3000);
-mongoose.connect('')
+mongoose.connect('mongodb+srv://juan123:Ch5uUG52FW6Bfrby@cluster0.ye50n.mongodb.net/ExpenseTracker?retryWrites=true&w=majority')
     .then(db => console.log('Database connected'))
     .catch(err => console.error(err));
 
