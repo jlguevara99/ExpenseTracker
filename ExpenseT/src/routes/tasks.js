@@ -10,6 +10,7 @@ router.get('/', async (req, res) =>{
 
 router.post('/', async (req, res) => {
     const expense = new Expense(req.body);
+    console.log(expense);
     await expense.save();
     res.json({
         status: 'Expense Saved'
