@@ -20,7 +20,7 @@
 
           <b-navbar-nav class="ml-auto">
             <div v-if="!$auth.loading">
-              <b-nav-item v-if="$auth.isAuthenticated" to="/">Today</b-nav-item>
+              <b-nav-item v-if="$auth.isAuthenticated" to="/expense">Today</b-nav-item>
             </div>
             <div v-if="!$auth.loading">
               <b-nav-item v-if="$auth.isAuthenticated" to="/">History</b-nav-item>

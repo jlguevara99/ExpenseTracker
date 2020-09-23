@@ -37,9 +37,13 @@ class Services {
         });
     }
 
-    static insertExpense(text){
+    static insertExpense(description, price, date, userId, category){
         return axios.post(url, {
-            text
+            description,
+            price,
+            date,
+            userId,
+            category
         });
     }
 

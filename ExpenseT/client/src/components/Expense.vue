@@ -9,9 +9,45 @@
         v-bind:index="index"
         v-bind:key="expense._id"
       >
+      {{`${expense.date.getDate()}/${expense.date.getMonth() + 1}/${expense.date.getFullYear()}`}}
       <p class="text">{{ expense.description }}</p>
       </div>
     </div>
+    <button v-on:click="createExpense">Proba</button>
+    <div>
+      <b-button id="show-btn" @click="$bvModal.show('addExpense')">Open Modal</b-button>
+
+      <b-modal id="addExpense">
+          <b-form @submit="createExpense">
+            <b-form-group id="input-group-1" label="Price" label-for="Price">
+              <b-form-input 
+                id="input-1" 
+                v-model="price" 
+                type="number" 
+                placeholder="Enter Price">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-2" label="Description" label-for="Description">
+              <b-form-input 
+                id="input-2" 
+                v-model="description" 
+                type="text" 
+                placeholder="Enter Despcription">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-3" label="Category" label-for="Category">
+              <b-form-select
+                id="input-3"
+                v-model="category"
+                :options="categories"
+                required
+              ></b-form-select>
+            </b-form-group>
+            <b-button type="submit" variant="primary">Create</b-button>
+          </b-form>
+      </b-modal>
+    </div>
+    <p>{{description}}</p>
   </div>
 </template>
 
@@ -24,7 +60,11 @@ export default {
     return {
       expenses: [],
       err: '',
-      text: ''
+      text: '',
+      description: '',
+      price: 0,
+      category: '',
+      categories: [{text: 'Select One', value: null}, 'Food', 'Health', 'Gifts', 'Transport', 'Games']
     }
   },
   async created(){
@@ -32,6 +72,15 @@ export default {
       this.expenses = await Services.getExpenses();
     } catch (err) {
       this.err = err.message;
+    }
+  },
+  methods: {
+    async createExpense(){
+      await Services.insertExpense(this.description, this.price, new Date(), this.$auth.user.sub, this.category);
+      this.description = '';
+      this.price = 0;
+      this.category = '';
+      this.expenses = await Services.getExpenses();
     }
   }
 }

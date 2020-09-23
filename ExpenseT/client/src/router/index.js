@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Profile from '../views/Profile.vue'
+import Profile from '../views/Profile.vue';
+import Expense from '../components/Expense.vue';
 import { authGuard } from "../auth/authGuard";
 
 Vue.use(VueRouter)
@@ -34,6 +35,11 @@ const router = new VueRouter({
       name: "profile",
       component: Profile,
       beforeEnter: authGuard
+    },
+    {
+      path: "/expense",
+      name: "expense",
+      component: Expense
     }
   ]
 });
