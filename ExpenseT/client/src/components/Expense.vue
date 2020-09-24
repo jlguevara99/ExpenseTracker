@@ -15,34 +15,34 @@
       <b-row class="mt-5">
         <b-col md="4">
           <b-card title="Food" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ today }}</b-card-text>
+            <b-card-text>{{ food }}</b-card-text>
           </b-card>
         </b-col>
         <b-col md="4">
           <b-card title="Health" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ today }}</b-card-text>
+            <b-card-text>{{ health }}</b-card-text>
           </b-card>
         </b-col>
         <b-col md="4">
           <b-card title="Gifts" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ today }}</b-card-text>
+            <b-card-text>{{ gifts }}</b-card-text>
           </b-card>
         </b-col>
       </b-row>
       <b-row class="mt-5">
         <b-col md="4">
           <b-card title="Transport" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ today }}</b-card-text>
+            <b-card-text>{{ transport }}</b-card-text>
           </b-card>
         </b-col>
         <b-col md="4">
           <b-card title="Games" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ today }}</b-card-text>
+            <b-card-text>{{ games }}</b-card-text>
           </b-card>
         </b-col>
         <b-col md="4">
           <b-card title="Others" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ today }}</b-card-text>
+            <b-card-text>{{ others }}</b-card-text>
           </b-card>
         </b-col>
       </b-row>
@@ -102,7 +102,7 @@ export default {
       gifts: 0,
       transport: 0,
       games: 0,
-      other: 0,
+      others: 0,
       user: ""
     };
   },
@@ -140,6 +140,25 @@ export default {
         && this.expenses[i].userId == this.user){
           this.today = this.today + this.expenses[i].price;
           console.log("encontró" + this.expenses[i].price);
+          switch(this.expenses[i].category){
+            case "Food":
+              this.food = this.food + this.expenses[i].price;
+              break;
+            case "Health":
+              this.health = this.health + this.expenses[i].price;
+              break;
+            case "Gifts":
+              this.gifts = this.gifts + this.expenses[i].price;
+              break;
+            case "Transport":
+              this.transport = this.transport + this.expenses[i].price;
+              break;
+            case "Games":
+              this.games = this.games + this.expenses[i].price;
+              break;
+            case "Other":
+              this.others = this.others + this.expenses[i].price;
+          }
         }
       }
       console.log("Dia hoy: " + todate.getDate());
