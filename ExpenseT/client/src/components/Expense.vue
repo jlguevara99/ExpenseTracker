@@ -1,50 +1,73 @@
 <template>
   <div class="container">
     <h1>Expenses</h1>
-    <hr>
-    <div class="expenses-container">
-      <div class="expense"
-        v-for="(expense,index) in expenses"
-        v-bind:item="expense"
-        v-bind:index="index"
-        v-bind:key="expense._id"
-      >
-      {{`${expense.date.getDate()}/${expense.date.getMonth() + 1}/${expense.date.getFullYear()}`}}
-      <p class="text">{{ expense.description }}</p>
-      </div>
-    </div>
-    <button v-on:click="createExpense">Proba</button>
+    <hr />
+
     <div>
-      <b-button id="show-btn" @click="$bvModal.show('addExpense')">Open Modal</b-button>
+      <b-row class="mt-5">
+        <b-col md="6">
+          <b-card title="Expenses" sub-title="Today's Expenses" align="center">
+            <b-card-text>{{ today }}</b-card-text>
+            <b-button id="show-btn" @click="$bvModal.show('addExpense')">Open Modal</b-button>
+          </b-card>
+        </b-col>
+      </b-row>
+      <b-row class="mt-5">
+        <b-col md="4">
+          <b-card title="Food" sub-title="Today's Expenses" align="center">
+            <b-card-text>{{ today }}</b-card-text>
+          </b-card>
+        </b-col>
+        <b-col md="4">
+          <b-card title="Health" sub-title="Today's Expenses" align="center">
+            <b-card-text>{{ today }}</b-card-text>
+          </b-card>
+        </b-col>
+        <b-col md="4">
+          <b-card title="Gifts" sub-title="Today's Expenses" align="center">
+            <b-card-text>{{ today }}</b-card-text>
+          </b-card>
+        </b-col>
+      </b-row>
+      <b-row class="mt-5">
+        <b-col md="4">
+          <b-card title="Transport" sub-title="Today's Expenses" align="center">
+            <b-card-text>{{ today }}</b-card-text>
+          </b-card>
+        </b-col>
+        <b-col md="4">
+          <b-card title="Games" sub-title="Today's Expenses" align="center">
+            <b-card-text>{{ today }}</b-card-text>
+          </b-card>
+        </b-col>
+        <b-col md="4">
+          <b-card title="Others" sub-title="Today's Expenses" align="center">
+            <b-card-text>{{ today }}</b-card-text>
+          </b-card>
+        </b-col>
+      </b-row>
+    </div>
+
+    <div>
 
       <b-modal id="addExpense">
-          <b-form @submit="createExpense">
-            <b-form-group id="input-group-1" label="Price" label-for="Price">
-              <b-form-input 
-                id="input-1" 
-                v-model="price" 
-                type="number" 
-                placeholder="Enter Price">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group id="input-group-2" label="Description" label-for="Description">
-              <b-form-input 
-                id="input-2" 
-                v-model="description" 
-                type="text" 
-                placeholder="Enter Despcription">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group id="input-group-3" label="Category" label-for="Category">
-              <b-form-select
-                id="input-3"
-                v-model="category"
-                :options="categories"
-                required
-              ></b-form-select>
-            </b-form-group>
-            <b-button type="submit" variant="primary">Create</b-button>
-          </b-form>
+        <b-form @submit="createExpense">
+          <b-form-group id="input-group-1" label="Price" label-for="Price">
+            <b-form-input id="input-1" v-model="price" type="number" placeholder="Enter Price"></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-2" label="Description" label-for="Description">
+            <b-form-input
+              id="input-2"
+              v-model="description"
+              type="text"
+              placeholder="Enter Despcription"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="input-group-3" label="Category" label-for="Category">
+            <b-form-select id="input-3" v-model="category" :options="categories" required></b-form-select>
+          </b-form-group>
+          <b-button type="submit" variant="primary">Create</b-button>
+        </b-form>
       </b-modal>
     </div>
     <p>{{description}}</p>
@@ -52,38 +75,83 @@
 </template>
 
 <script>
-import Services from '../Services'
+import Services from "../Services";
 
 export default {
-  name: 'Expense',
-  data(){
+  name: "Expense",
+  data() {
     return {
       expenses: [],
-      err: '',
-      text: '',
-      description: '',
+      err: "",
+      text: "",
+      description: "",
       price: 0,
-      category: '',
-      categories: [{text: 'Select One', value: null}, 'Food', 'Health', 'Gifts', 'Transport', 'Games']
-    }
+      category: "",
+      categories: [
+        { text: "Select One", value: null },
+        "Food",
+        "Health",
+        "Gifts",
+        "Transport",
+        "Games",
+        "Other"
+      ],
+      today: 0,
+      food: 0,
+      health: 0,
+      gifts: 0,
+      transport: 0,
+      games: 0,
+      other: 0,
+      user: ""
+    };
   },
-  async created(){
-    try {
+  async created() {
+    await this.getUser();
+    try {      
       this.expenses = await Services.getExpenses();
+      this.CalculateTotal();
     } catch (err) {
       this.err = err.message;
     }
   },
   methods: {
-    async createExpense(){
-      await Services.insertExpense(this.description, this.price, new Date(), this.$auth.user.sub, this.category);
-      this.description = '';
+    async createExpense() {
+      await Services.insertExpense(
+        this.description,
+        this.price,
+        new Date(),
+        this.$auth.user.sub,
+        this.category
+      );
+      this.description = "";
       this.price = 0;
-      this.category = '';
+      this.category = "";
       this.expenses = await Services.getExpenses();
+    },
+    CalculateTotal(){    
+      var i = 0;
+      var todate = new Date();
+      for(i = 0; i < this.expenses.length; i++){
+        console.log("USUARIO: " + this.user);
+        if(this.expenses[i].date.getDate() == todate.getDate()
+        && this.expenses[i].date.getMonth() + 1 == todate.getMonth() + 1
+        && this.expenses[i].date.getFullYear() == todate.getFullYear()
+        && this.expenses[i].userId == this.user){
+          this.today = this.today + this.expenses[i].price;
+          console.log("encontró" + this.expenses[i].price);
+        }
+      }
+      console.log("Dia hoy: " + todate.getDate());
+      console.log("Mes hoy: " + (todate.getMonth() + 1));
+      console.log("Año hoy: " + todate.getFullYear());
+      console.log("User: " + this.user );
+    },
+    async getUser(){
+      this.user = this.$auth.user.sub;
     }
-  }
-}
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -113,7 +181,7 @@ div.date {
   left: 0;
   padding: 5px 15px 5px 15px;
   background-color: darkblue;
-  color:bisque;
+  color: bisque;
   font-size: 13px;
 }
 
