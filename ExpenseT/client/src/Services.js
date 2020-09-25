@@ -47,6 +47,16 @@ class Services {
         });
     }
 
+    static updateExpense(id, description, price, date, userId, category){
+        return axios.put(`${url}${id}`,{
+            description,
+            price,
+            date,
+            userId,
+            category
+        });
+    }
+
     static deleteExpense(id){
         return axios.delete(`${url}${id}`);
     }
