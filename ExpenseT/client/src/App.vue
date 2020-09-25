@@ -23,7 +23,7 @@
               <b-nav-item v-if="$auth.isAuthenticated" to="/expense">Today</b-nav-item>
             </div>
             <div v-if="!$auth.loading">
-              <b-nav-item v-if="$auth.isAuthenticated" to="/">History</b-nav-item>
+              <b-nav-item v-if="$auth.isAuthenticated" to="/history">History</b-nav-item>
             </div>
             <div v-if="!$auth.loading">
               <!-- show login when not authenticated -->

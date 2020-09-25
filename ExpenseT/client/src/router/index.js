@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Profile from '../views/Profile.vue';
 import Expense from '../components/Expense.vue';
+import History from '../components/History.vue';
 import { authGuard } from "../auth/authGuard";
 
 Vue.use(VueRouter)
@@ -40,6 +41,11 @@ const router = new VueRouter({
       path: "/expense",
       name: "expense",
       component: Expense
+    },
+    {
+      path: "/history",
+      name: "history",
+      component: History
     }
   ]
 });
