@@ -1,76 +1,115 @@
 <template>
-  <div class="container">
-    <h1>Expenses</h1>
-    <hr />
+  <div>
+    <div class="container">
+      <h1>Expenses</h1>
+      <hr />
 
-    <div>
-      <b-row class="mt-5">
-        <b-col md="6">
-          <b-card title="Expenses" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ today }}</b-card-text>
-            <b-button id="show-btn" @click="$bvModal.show('addExpense')">Open Modal</b-button>
-          </b-card>
-        </b-col>
-      </b-row>
-      <b-row class="mt-5">
-        <b-col md="4">
-          <b-card title="Food" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ food }}</b-card-text>
-          </b-card>
-        </b-col>
-        <b-col md="4">
-          <b-card title="Health" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ health }}</b-card-text>
-          </b-card>
-        </b-col>
-        <b-col md="4">
-          <b-card title="Gifts" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ gifts }}</b-card-text>
-          </b-card>
-        </b-col>
-      </b-row>
-      <b-row class="mt-5">
-        <b-col md="4">
-          <b-card title="Transport" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ transport }}</b-card-text>
-          </b-card>
-        </b-col>
-        <b-col md="4">
-          <b-card title="Games" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ games }}</b-card-text>
-          </b-card>
-        </b-col>
-        <b-col md="4">
-          <b-card title="Others" sub-title="Today's Expenses" align="center">
-            <b-card-text>{{ others }}</b-card-text>
-          </b-card>
-        </b-col>
-      </b-row>
+      <div>
+        <b-row class="mt-5">
+          <b-col md="3"></b-col>
+          <b-col md="6">
+            <b-card class="today"
+              title="Expenses"
+              sub-title="Today's Expenses"
+              align="center"
+            >
+              <b-card-text>${{ today }}</b-card-text>
+              <b-button id="show-btn" variant="primary" @click="showModal()"
+                >Add Expense</b-button
+              >
+            </b-card>
+          </b-col>
+          <b-col md="3"></b-col>
+        </b-row>
+        <b-row class="mt-5">
+          <b-col md="4">
+            <b-card title="Food" sub-title="Today's Expenses" align="center">
+              <b-card-text>${{ food }}</b-card-text>
+            </b-card>
+          </b-col>
+          <b-col md="4">
+            <b-card title="Health" sub-title="Today's Expenses" align="center">
+              <b-card-text>${{ health }}</b-card-text>
+            </b-card>
+          </b-col>
+          <b-col md="4">
+            <b-card title="Gifts" sub-title="Today's Expenses" align="center">
+              <b-card-text>${{ gifts }}</b-card-text>
+            </b-card>
+          </b-col>
+        </b-row>
+        <b-row class="mt-5">
+          <b-col md="4">
+            <b-card
+              title="Transport"
+              sub-title="Today's Expenses"
+              align="center"
+            >
+              <b-card-text>${{ transport }}</b-card-text>
+            </b-card>
+          </b-col>
+          <b-col md="4">
+            <b-card title="Games" sub-title="Today's Expenses" align="center">
+              <b-card-text>${{ games }}</b-card-text>
+            </b-card>
+          </b-col>
+          <b-col md="4">
+            <b-card title="Others" sub-title="Today's Expenses" align="center">
+              <b-card-text>${{ others }}</b-card-text>
+            </b-card>
+          </b-col>
+        </b-row>
+      </div>
+
+      <div>
+        <b-modal ref="addExpense" title="Add Expense" ok-only header-bg-variant="primary">
+          <b-form @submit.prevent="createExpense">
+            <b-form-group id="input-group-1" label="Price $" label-for="Price">
+              <b-form-input
+                id="input-1"
+                v-model="price"
+                type="number"
+                :state="priceState"
+                aria-describedby="input-live-help input-live-feedback"
+                required
+                placeholder="Enter Price"
+              ></b-form-input>
+              <b-form-invalid-feedback id="input-live-feedback">
+                Price must be greater than 0
+              </b-form-invalid-feedback>
+              <b-form-text id="input-live-help">Correct price</b-form-text>
+            </b-form-group>
+            <b-form-group
+              id="input-group-2"
+              label="Description"
+              label-for="Description"
+            >
+              <b-form-input
+                id="input-2"
+                v-model="description"
+                type="text"
+                required
+                placeholder="Enter Despcription"
+              ></b-form-input>
+            </b-form-group>
+            <b-form-group
+              id="input-group-3"
+              label="Category"
+              label-for="Category"
+            >
+              <b-form-select
+                id="input-3"
+                v-model="category"
+                :options="categories"
+                required
+              ></b-form-select>
+            </b-form-group>
+            <b-button type="submit" variant="primary">Create</b-button>
+          </b-form>
+        </b-modal>
+      </div>
+      <p>{{ description }}</p>
     </div>
-
-    <div>
-
-      <b-modal id="addExpense">
-        <b-form @submit="createExpense">
-          <b-form-group id="input-group-1" label="Price" label-for="Price">
-            <b-form-input id="input-1" v-model="price" type="number" placeholder="Enter Price"></b-form-input>
-          </b-form-group>
-          <b-form-group id="input-group-2" label="Description" label-for="Description">
-            <b-form-input
-              id="input-2"
-              v-model="description"
-              type="text"
-              placeholder="Enter Despcription"
-            ></b-form-input>
-          </b-form-group>
-          <b-form-group id="input-group-3" label="Category" label-for="Category">
-            <b-form-select id="input-3" v-model="category" :options="categories" required></b-form-select>
-          </b-form-group>
-          <b-button type="submit" variant="primary">Create</b-button>
-        </b-form>
-      </b-modal>
-    </div>
-    <p>{{description}}</p>
   </div>
 </template>
 
@@ -79,6 +118,11 @@ import Services from "../Services";
 
 export default {
   name: "Expense",
+  computed: {
+    priceState(){
+      return this.price > 0 ? true:false;
+    }
+  },
   data() {
     return {
       expenses: [],
@@ -94,7 +138,7 @@ export default {
         "Gifts",
         "Transport",
         "Games",
-        "Other"
+        "Other",
       ],
       today: 0,
       food: 0,
@@ -103,12 +147,12 @@ export default {
       transport: 0,
       games: 0,
       others: 0,
-      user: ""
+      user: "",
     };
   },
   async created() {
     await this.getUser();
-    try {      
+    try {
       this.expenses = await Services.getExpenses();
       this.CalculateTotal();
     } catch (err) {
@@ -128,19 +172,33 @@ export default {
       this.price = 0;
       this.category = "";
       this.expenses = await Services.getExpenses();
+      this.CalculateTotal();
+      this.$refs["addExpense"].hide();
     },
-    CalculateTotal(){    
+    showModal() {
+      this.$refs["addExpense"].show();
+    },
+    CalculateTotal() {
+      this.today = 0;
+      this.food = 0;
+      this.health = 0;
+      this.gifts = 0;
+      this.transport = 0;
+      this.games = 0;
+      this.others = 0;
       var i = 0;
       var todate = new Date();
-      for(i = 0; i < this.expenses.length; i++){
+      for (i = 0; i < this.expenses.length; i++) {
         console.log("USUARIO: " + this.user);
-        if(this.expenses[i].date.getDate() == todate.getDate()
-        && this.expenses[i].date.getMonth() + 1 == todate.getMonth() + 1
-        && this.expenses[i].date.getFullYear() == todate.getFullYear()
-        && this.expenses[i].userId == this.user){
+        if (
+          this.expenses[i].date.getDate() == todate.getDate() &&
+          this.expenses[i].date.getMonth() + 1 == todate.getMonth() + 1 &&
+          this.expenses[i].date.getFullYear() == todate.getFullYear() &&
+          this.expenses[i].userId == this.user
+        ) {
           this.today = this.today + this.expenses[i].price;
           console.log("encontró" + this.expenses[i].price);
-          switch(this.expenses[i].category){
+          switch (this.expenses[i].category) {
             case "Food":
               this.food = this.food + this.expenses[i].price;
               break;
@@ -164,20 +222,32 @@ export default {
       console.log("Dia hoy: " + todate.getDate());
       console.log("Mes hoy: " + (todate.getMonth() + 1));
       console.log("Año hoy: " + todate.getFullYear());
-      console.log("User: " + this.user );
+      console.log("User: " + this.user);
     },
-    async getUser(){
+    async getUser() {
       this.user = this.$auth.user.sub;
-    }
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+:root{
+  background-color: #42b983;
+}
 div.container {
   max-width: 800px;
   margin: 0 auto;
+}
+
+.card{
+  color: green;
+  border-style: groove;
+  border-radius: 5px;
+  border-color: #1078af;
+  border-width: medium;
+  background-color: #0a588d3f;
 }
 
 div.expense {
@@ -194,6 +264,10 @@ p.text {
   margin-bottom: 0;
 }
 
+.today {
+  font-size: 150%;
+}
+
 div.date {
   position: absolute;
   top: 0;
@@ -202,6 +276,20 @@ div.date {
   background-color: darkblue;
   color: bisque;
   font-size: 13px;
+}
+
+.back {
+  background: #085078; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #85d8ce,
+    #085078
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #85d8ce,
+    #085078
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 h3 {

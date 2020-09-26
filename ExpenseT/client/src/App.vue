@@ -1,20 +1,12 @@
 <template>
-  <div id="app">
-    <!--<div id="nav">
-      <router-link to="/">Home</router-link>|
-      <router-link to="/about">About</router-link>|
-
-      <router-link v-if="$auth.isAuthenticated" to="/profile">Profile</router-link>
-    </div>-->
-    <b-navbar toggleable="md" type="dark" variant="info">
+  <div id="app" >
+    <b-navbar toggleable="md" type="dark" variant="dark">
       <b-container>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        <b-navbar-brand href="#">NavBar</b-navbar-brand>
-
+        <b-avatar variant="info" square src="https://i.imgur.com/GPOlvgq.png"></b-avatar>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
             <b-nav-item to="/">Home</b-nav-item>
-            <b-nav-item to="about">About</b-nav-item>
             <b-nav-item v-if="$auth.isAuthenticated" to="/profile">Profile</b-nav-item>
           </b-navbar-nav>
 
@@ -57,4 +49,20 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.back{
+  background: #085078; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #85d8ce,
+    #085078
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #85d8ce,
+    #085078
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+</style>
 
