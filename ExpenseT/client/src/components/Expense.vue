@@ -152,11 +152,15 @@ export default {
   },
   async created() {
     await this.getUser();
+    
+    console.log("Hola");
     try {
       this.expenses = await Services.getExpenses();
+      console.log("A ver: " + this.expenses);
       this.CalculateTotal();
     } catch (err) {
       this.err = err.message;
+      console.log(this.err);
     }
   },
   methods: {

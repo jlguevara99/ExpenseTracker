@@ -6,6 +6,7 @@ class Services {
     static getExpenses(){
         return new Promise((resolve, reject) => {
             axios.get(url).then((res) =>{
+                console.log("Res: " + res.data);
                 const data = res.data;
                 resolve(
                     data.map(expense =>({
