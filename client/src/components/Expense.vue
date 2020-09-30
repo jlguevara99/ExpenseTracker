@@ -156,7 +156,6 @@ export default {
     console.log("Hola");
     try {
       this.expenses = await Services.getExpenses();
-      console.log("A ver: " + this.expenses);
       this.CalculateTotal();
     } catch (err) {
       this.err = err.message;
@@ -193,7 +192,6 @@ export default {
       var i = 0;
       var todate = new Date();
       for (i = 0; i < this.expenses.length; i++) {
-        console.log("USUARIO: " + this.user);
         if (
           this.expenses[i].date.getDate() == todate.getDate() &&
           this.expenses[i].date.getMonth() + 1 == todate.getMonth() + 1 &&
@@ -201,7 +199,6 @@ export default {
           this.expenses[i].userId == this.user
         ) {
           this.today = this.today + this.expenses[i].price;
-          console.log("encontró" + this.expenses[i].price);
           switch (this.expenses[i].category) {
             case "Food":
               this.food = this.food + this.expenses[i].price;
@@ -223,10 +220,6 @@ export default {
           }
         }
       }
-      console.log("Dia hoy: " + todate.getDate());
-      console.log("Mes hoy: " + (todate.getMonth() + 1));
-      console.log("Año hoy: " + todate.getFullYear());
-      console.log("User: " + this.user);
     },
     async getUser() {
       this.user = this.$auth.user.sub;
@@ -235,7 +228,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 :root{
   background-color: #42b983;
@@ -280,20 +272,6 @@ div.date {
   background-color: darkblue;
   color: bisque;
   font-size: 13px;
-}
-
-.back {
-  background: #085078; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to left,
-    #85d8ce,
-    #085078
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to left,
-    #85d8ce,
-    #085078
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 h3 {

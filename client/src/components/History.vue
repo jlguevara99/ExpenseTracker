@@ -11,6 +11,7 @@
               >Set Today</b-button
             >
         <hr/>
+        <p>Total: ${{total}}</p>
       </div>
         <b-row>
           <b-col md="auto">
@@ -125,14 +126,10 @@ export default {
     return {
       expenses: [],
       fexpenses: [],
+      total: 0,
       user: "",
       tdate: "",
       context: "",
-      fields: [
-        "description",
-        { key: "price", label: "Price", sortable: true },
-        "date",
-      ],
       categories: [
         { text: "Select One", value: null },
         "Food",
@@ -198,6 +195,7 @@ export default {
     },
     filterExpenses() {
       this.fexpenses = [];
+      this.total = 0;
       var i = 0;
       for (i; i < this.expenses.length; i++) {
         if (
@@ -207,6 +205,7 @@ export default {
           this.expenses[i].userId == this.user
         ) {
           this.fexpenses.push(this.expenses[i]);
+          this.total += this.expenses[i].price;
         }
       }
     },
@@ -217,8 +216,6 @@ export default {
       this.upData.date = data.date;
       this.upData.userId = data.userId;
       this.upData.id = data._id;
-      console.log("user: " + this.upData.userId);
-      console.log("id: " + this.upData.id);
       this.$refs["updateModal"].show();
     },
   },
@@ -226,24 +223,15 @@ export default {
 </script>
 
 <style scoped>
-.back {
-  background: #085078; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to left,
-    #85d8ce,
-    #085078
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to left,
-    #85d8ce,
-    #085078
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
 .inf {
   background: white;
   padding: 25px;
   margin: 25px;
+}
+
+p {
+  font-family: "Lucida Console", Courier, monospace;
+  font-weight: bold;
 }
 
 table {

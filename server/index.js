@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
 const tasks = require('./routes/tasks');
+
 //Settings
 app.set('port', process.env.PORT || 3000);
 mongoose.connect('mongodb+srv://juan123:Ch5uUG52FW6Bfrby@cluster0.ye50n.mongodb.net/ExpenseTracker?retryWrites=true&w=majority')
@@ -15,10 +16,9 @@ app.use(express.json());
 app.use('/tasks/', tasks);
 
 //Static Files
-    app.use(express.static(__dirname + '/public/'));
+app.use(express.static(__dirname + '/public/'));
 
-    app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
-
+app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
 
 //routes
 app.use('/tasks',require('./routes/tasks'));
